@@ -40,7 +40,7 @@ def apply_threshold(gradient, threshold):
 # Exemplo de como usar as funções definidas
 if __name__ == "__main__":
     # Correção: Definir img_path como uma string contendo o caminho do arquivo
-    img_path = 'D:\\ESTUDO\\MET_NUM_2\\mn2_implementations\\mn2_implementations\\question_1\\gato.jpg'
+    img_path = 'D:\\ESTUDO\\MET_NUM_2\\mn2_implementations\\mn2_implementations\\tarefa_1.2\\gato.jpg'
     # Carrega a imagem em escala de cinza diretamente
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)    
     img_suavizada = gaussian_filter(img, 5, 1)
