@@ -1,7 +1,6 @@
 #aula_18
 
 import math
-
 from numpy import double
 
 def Normalizar(vOld):
