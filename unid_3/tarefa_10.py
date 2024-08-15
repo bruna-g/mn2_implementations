@@ -1,43 +1,10 @@
 #aula_18
 
-import math
 from numpy import double
-
-def Normalizar(vOld):
-  total = 0.0
-  x1 = []
-  for l in range(len(vOld)):
-    total = total + vOld[l]**2.0
-  denominador = math.sqrt(total)
-
-  for m in range(len(vOld)):
-    vOld[m] = vOld[m] / denominador
-
-  x1 = vOld.copy() #x1 é o vOld normalizado
-  return x1
-
-
-def multVetorMatriz(vOld, matA):
-  vNew = []
-  for i in range(len(matA)):
-    sum = 0.0
-    for j in range(len(vOld)):
-      sum = sum + vOld[j] * matA[i][j]
-    vNew.append(sum)
-  return vNew #resulta num vetor
-
-
-def multVetorVetor(x1, vNew):
-  lambdaNew = 0.0
-  for i in range(len(x1)):
-    lambdaNew += x1[i] * vNew[i]
-  return lambdaNew # resulta num valor escalar
-
-
-def convergencia(lambdaOld, lambdaNew):
-  conv = abs((lambdaNew - lambdaOld) / lambdaNew)
-  return conv
-
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from auxiliares import *
 
 #inicializando a matriz A
 tamA = int(input("Informe o tamanho da matriz A: ")) 
