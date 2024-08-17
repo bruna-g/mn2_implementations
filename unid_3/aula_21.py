@@ -13,7 +13,7 @@ def metodoDeJacobi(matA, n, e):
   matJ = []
   matAnew = []
   matAold = []
-  # matmatP = []
+  # matAbarra = []
   tamA = n
 
   lamb = [0.0 for _ in range(n)]
@@ -48,12 +48,12 @@ def varreduraDeJacobi(matA, n):
 
   for j in range(n-1):
     for i in range(j+1, n):
-      Jij = matrizJacobiBaseadaNoElemento_ij_DaMatrizVelha(matAold, i, j, n)
-      Jij_T = transposta(Jij)
+      matJij = matrizJacobiBaseadaNoElemento_ij_DaMatrizVelha(matAold, i, j, n)
+      Jij_T = transposta(matJij)
       aux = multMatrizMatriz(Jij_T, matAold)
-      matAnew = multMatrizMatriz(aux, Jij)
+      matAnew = multMatrizMatriz(aux, matJij)
       matAold = matAnew.copy()
-      matJ = multMatrizMatriz(matJ, Jij)
+      matJ = multMatrizMatriz(matJ, matJij)
 
   matmatP = matAnew.copy()
   return (matmatP, matJ)
@@ -65,8 +65,7 @@ def matrizJacobiBaseadaNoElemento_ij_DaMatrizVelha(matA, i, j, n):
   Jij = []
   teta = e = 10**-6
   Jij = matIdentidade(n)
-
-  pi = 3.14159265358979323846
+  pi = math.pi
 
   if abs(matA[i][j]) <= e:
     return Jij

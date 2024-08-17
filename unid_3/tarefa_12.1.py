@@ -1,4 +1,4 @@
-#aula 20
+# aula 20
 # METODO HOUSEHOLDER
 
 import sys
