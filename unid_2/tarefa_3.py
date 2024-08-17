@@ -5,6 +5,9 @@
 # implementa a estratégia de partição do problema. Veja, em cada caso, quantas iterações
 # foram necessárias até atingir a tolerância especificada.
 
+#aula 8
+# NEWTON-COTES ABERTA E FECHADA
+
 import numpy as np
 
 # Função para calcular as diferenças divididas

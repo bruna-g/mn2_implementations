@@ -1,4 +1,5 @@
 #aula_18
+# POTENCIA REGULAR
 
 from numpy import double
 import sys
