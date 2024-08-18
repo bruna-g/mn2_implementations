@@ -7,14 +7,7 @@ from auxiliares import *
 vetorInicial = float(input("Insira o vetor inicial: "))
 tol = float(input("Insira a tolerância desejada: "))'''
 
-matrizA = [[5.0, 2.0, 1.0], 
-           [2.0, 3.0, 1.0], 
-           [1.0, 1.0, 2.0]]
-print("Matriz A:\n", matrizA[0], "\n", matrizA[1], "\n", matrizA[2])
-vetorInicial = [1.0, 1.0, 1.0]
-tol = 0.000006
-
-def potenciaRegular(matrizA, vetorInicial, E):
+def potenciaInversa(matrizA, vetorInicial, E):
     L, U = decompLU(matrizA)
     lambdaNovo = 0.0
     vetorNovo = vetorInicial
@@ -29,10 +22,14 @@ def potenciaRegular(matrizA, vetorInicial, E):
             break
     lambdaN = 1/lambdaNovo
     xn = x1_velho
-    print("\nlambdaN = ", lambdaN, "\nXn = ", xn)
-
-potenciaRegular()
+    return lambdaN, xn
 
 
-
-
+matrizA = [[5.0, 2.0, 1.0], 
+           [2.0, 3.0, 1.0], 
+           [1.0, 1.0, 2.0]]
+vetorInicial = [1.0, 1.0, 1.0]
+tol = 0.000006
+lambdaN, xn = potenciaInversa(matrizA, vetorInicial, tol)
+#print("Matriz A:\n", matrizA[0], "\n", matrizA[1], "\n", matrizA[2])
+#print("\nlambdaN = ", lambdaN, "\nXn = ", xn)

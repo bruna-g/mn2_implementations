@@ -136,7 +136,6 @@ def subtracaoMatrizMatriz(matriz1, matriz2):
   return matriz3
 
 
-
 def matIdentidade(tam):
   matI = [[0.0 for _ in range(tam)] for _ in range(tam)]
   for i in range(tam):
