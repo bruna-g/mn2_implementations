@@ -1,3 +1,4 @@
+import numpy as np
 import math
 
 #tarefa_10 ---------------------------------------------
@@ -14,6 +15,15 @@ def Normalizar(vOld):
   x1 = vOld.copy() #x1 é o vOld normalizado
   return x1
 
+def Normalizar2(vOld):
+  total = 0.0
+  x1 = vOld.copy()
+  for l in range(len(vOld)):
+    total = total + vOld[l]**2.0
+  denominador = math.sqrt(total)
+  for m in range(len(vOld)):
+    x1[m] = vOld[m] / denominador
+  return x1
 
 def multVetorMatriz(vOld, matA):
   vNew = []
@@ -24,17 +34,46 @@ def multVetorMatriz(vOld, matA):
     vNew.append(sum)
   return vNew #resulta num vetor
 
-
 def multVetorVetor(x1, vNew):
   lambdaNew = 0.0
   for i in range(len(x1)):
     lambdaNew += x1[i] * vNew[i]
   return lambdaNew # resulta num valor escalar
 
-
 def convergencia(lambdaOld, lambdaNew):
   conv = abs((lambdaNew - lambdaOld) / lambdaNew)
   return conv
+
+
+#tarefa_11 ---------------------------------------------
+def decompLU(A):
+    n = len(A)
+    L = np.zeros((n, n))
+    U = np.zeros((n, n))
+    for i in range(n):
+        # Diagonal da matriz L é composta por 1s
+        L[i][i] = 1
+        # Calcula os elementos da matriz U
+        for j in range(i, n):
+            U[i][j] = A[i][j] - sum(L[i][k] * U[k][j] for k in range(i))
+        # Calcula os elementos da matriz L
+        for j in range(i + 1, n):
+            L[j][i] = (A[j][i] - sum(L[j][k] * U[k][i] for k in range(i))) / U[i][i]
+    return L, U
+
+def solverLU(A, y):
+    L, U = decompLU(A)
+    # Passo 1: Resolver Lb = y (b é o vetor intermediário)
+    n = len(y)
+    b = np.zeros_like(y, dtype=float)
+    for i in range(n):
+        b[i] = y[i] - sum(L[i][j] * b[j] for j in range(i))
+    # Passo 2: Resolver Ux = b (encontrar o vetor x)
+    x = np.zeros_like(y, dtype=float)
+    for i in range(n-1, -1, -1):
+        x[i] = (b[i] - sum(U[i][j] * x[j] for j in range(i+1, n))) / U[i][i]
+    return x
+
 
 #tarefa_12 ---------------------------------------------
 def transposta(matriz):
@@ -96,15 +135,7 @@ def subtracaoMatrizMatriz(matriz1, matriz2):
     matriz3.append(linha)
   return matriz3
 
-def Normalizar(vOld):
-  total = 0.0
-  x1 = vOld.copy()
-  for l in range(len(vOld)):
-    total = total + vOld[l]**2.0
-  denominador = math.sqrt(total)
-  for m in range(len(vOld)):
-    x1[m] = vOld[m] / denominador
-  return x1
+
 
 def matIdentidade(tam):
   matI = [[0.0 for _ in range(tam)] for _ in range(tam)]
@@ -114,6 +145,7 @@ def matIdentidade(tam):
         matI[i][j] = 1.0
   return matI
 
+
 #tarefa_12_1 ---------------------------------------------
 def somaDosQuadradosDosTermosAbaixoDaDiagonal(matriz, n):
   soma = 0.0
@@ -122,3 +154,4 @@ def somaDosQuadradosDosTermosAbaixoDaDiagonal(matriz, n):
       if i > j:
         soma += matriz[i][j] ** 2.0
   return soma
+
