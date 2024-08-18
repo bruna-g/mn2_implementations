@@ -1,6 +1,6 @@
 # aula 22
 # METODO QR
-
+import numpy as np
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -9,18 +9,18 @@ import math
 
 def metodoQR(matA, n, e):
   matP = []
-  # matQ = []
-  # matR = []
-  # matAnew = []
-  # matAold = []
-  # matAbarra = []
+  matQ = []
+  matR = []
+  matAnew = []
+  matAold = []
+  matAbarra = []
   lamb = [0.0 for _ in range(n)]
   val = 100
 
   matP = matIdentidade(n)
-  matAold = matA.copy()
+  matAold = matA
 
-  max_iter = 30
+  max_iter = 5
   iter_count = 0
 
   while val > e:
@@ -45,8 +45,8 @@ def metodoQR(matA, n, e):
 def decomposicaoQR(matA):
   matQT = []
   matJij = []
-  #matRnew = []
-  #matRold = []
+  matRnew = []
+  matRold = []
   matR = []
   n = len(matA)
 
@@ -70,18 +70,17 @@ def decomposicaoQR(matA):
 #------------------------------------------------------------
 
 def matrizJacobiBaseadaNoElemento_ij_DeRVelha(matA, i, j):
-  #matJij = []
+  matJij = []
   teta = 0.0
   e = 10**-6
   pi = 3.14159265358979323846
   n = len(matA)
 
   matJij = matIdentidade(n)
-  a = matA[i][j]
-  if abs(a <= e):
+  if np.abs(matA[i][j]) <= e:
     return matJij
   
-  if abs(matA[j][j] <= e):
+  if np.abs(matA[j][j]) <= e:
     if matA[i][j] < 0:
       teta = pi/2
     else:
