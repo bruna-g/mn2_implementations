@@ -9,47 +9,59 @@ import math
 
 def metodoQR(matA, n, e):
   matP = []
-  matQ = []
-  matR = []
-  matAnew = []
-  matAold = []
+  # matQ = []
+  # matR = []
+  # matAnew = []
+  # matAold = []
   # matAbarra = []
   lamb = [0.0 for _ in range(n)]
-  val = 100.0
+  val = 100
 
   matP = matIdentidade(n)
   matAold = matA.copy()
 
+  max_iter = 30
+  iter_count = 0
+
   while val > e:
-    (matQ, matR) = decomposicaoQR(matAold, n)
+    (matQ, matR) = decomposicaoQR(matAold)
     matAnew = multMatrizMatriz(matR, matQ)
     matAold = matAnew.copy()
     matP = multMatrizMatriz(matP, matQ)
     val = somaDosQuadradosDosTermosAbaixoDaDiagonal(matAnew, n)
+    iter_count += 1
+
+    if iter_count == max_iter:
+      print("Alcançou o número máximo de iterações sem convergência.")
+      break
   
-  for i in range(len(lamb)):
-    lamb[i] = matAnew[i][i]
+  for k in range(len(lamb)):
+    lamb[k] = matAnew[k][k]
   
-  return (matP, lamb)
+  return (matP, lamb, matAnew)
 
 #------------------------------------------------------------
 
-def decomposicaoQR(matA, n):
+def decomposicaoQR(matA):
   matQT = []
   matJij = []
-  matRnew = []
-  matRold = []
+  #matRnew = []
+  #matRold = []
   matR = []
+  n = len(matA)
 
   matQT = matIdentidade(n)
   matRold = matA.copy()
 
   for j in range(n-1):
     for i in range(j+1, n):
-      matJij = matrizJacobiBaseadaNoElemento_ij_DeRVelha(matRold, i, j, n) 
+      matJij = matrizJacobiBaseadaNoElemento_ij_DeRVelha(matRold, i, j) 
       matRnew = multMatrizMatriz(matJij, matRold)
       matRold = matRnew.copy()
       matQT = multMatrizMatriz(matJij, matQT)
+      print("Matriz R_nova da iteração %d, %d" %(i, j))
+      print(matRnew)
+      print("\n")
 
   matQ = transposta(matQT)
   matR = matRnew.copy()
@@ -57,22 +69,25 @@ def decomposicaoQR(matA, n):
 
 #------------------------------------------------------------
 
-def matrizJacobiBaseadaNoElemento_ij_DeRVelha(matA, i, j, n):
-  matI = matIdentidade(n)
-  matJij = []
-  teta = e = 10**-6
-  pi = math.pi
+def matrizJacobiBaseadaNoElemento_ij_DeRVelha(matA, i, j):
+  #matJij = []
+  teta = 0.0
+  e = 10**-6
+  pi = 3.14159265358979323846
+  n = len(matA)
 
-  matJij = matI.copy()
-  if abs(matA[i][j] <= e):
+  matJij = matIdentidade(n)
+  a = matA[i][j]
+  if abs(a <= e):
     return matJij
+  
   if abs(matA[j][j] <= e):
     if matA[i][j] < 0:
       teta = pi/2
     else:
       teta = -pi/2
   else:
-    teta = math.atan(-matA[i][j]/matA[j][j])
+    teta = math.atan((-matA[i][j])/(matA[j][j]))
 
   matJij[i][i] = math.cos(teta)
   matJij[j][j] = math.cos(teta)
@@ -84,9 +99,11 @@ def matrizJacobiBaseadaNoElemento_ij_DeRVelha(matA, i, j, n):
 if __name__ == '__main__':
   matA = [[40, 8, 4, 2, 1],[8, 30, 12, 6, 2],[4, 12, 20, 1, 2],[2, 6, 1, 25, 4],[1, 2, 2, 4, 5]]
   tamA = len(matA)
+  erro = 10**-6
 
-  (matP, lamb) = metodoQR(matA, tamA, 10**-6)
+  (matP, lamb, matAnova) = metodoQR(matA, tamA, erro)
   print("Matriz P:")
   for i in range(tamA):
     print(matP[i])
   print("Autovalores: ", lamb)
+
