@@ -61,7 +61,7 @@ matrizA3 = [[40.0, 8.0, 4.0, 2.0, 1.0],
 print("Matriz A3: ")
 for i in range(len(matrizA3)):
     print(matrizA3[i])
-vetorInicial3 = [1.0, 1.0, 1.0]
+vetorInicial3 = [1.0, 1.0, 1.0, 1.0, 1.0]
 tol3 = 0.000006
 deslocamento3 = 1
 
