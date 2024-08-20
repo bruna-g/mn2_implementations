@@ -5,6 +5,8 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from auxiliares import *
+from tarefa_11_1 import *
+from tarefa_10 import *
 
 def matriz_metodoDeHouseHolder(matA, i):
   tamA = len(matA)
@@ -60,19 +62,37 @@ if __name__ == "__main__":
   tamA = len(matA)
 
   n = tamA
-  Abarra = []
-  H = []
 
   Abarra, H = metodoDeHouseHolder(matA, n)
 
   Abarra = [[round(elemento, 4) for elemento in linha] for linha in Abarra]
-
   H = [[round(elemento, 4) for elemento in linha] for linha in H]
 
   print("Matriz Abarra:")
   for i in range(n):
     print(Abarra[i])
+  print("\n")
 
   print("Matriz H:")
   for i in range(n):
     print(H[i])
+  print("\n")
+  print("------------------------------------------")
+  
+  #Use os métodos da potência para encontrar os autovalores e autovetores da matriz Abarra:
+  (autov, autovet) = potenciaRegular(Abarra, [1.0]*5, 10**-6)
+
+  print("potencia regular:")
+  print("O autovalor de Abarra é: ", autov)
+  print("Os autovetores de Abarra são: ", autovet)
+  print("\n")
+
+  #usando a matriz H e os autovetores da matriz Abarra, encontre os autovetores da matriz A:
+  autovet = Normalizar(autovet)
+  autovet = multVetorMatriz(autovet, H)
+  print("Os autovetores de A são: ", autovet)
+
+  #encontre os autovalores da matriz A:
+  autov = multVetorVetor(autovet, multVetorMatriz(autovet, matA))
+  print("Os autovalores de A são: ", autov)
+

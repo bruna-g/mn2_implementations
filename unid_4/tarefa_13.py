@@ -1,5 +1,5 @@
-#aula 25
-# METODO RANGE-KUTTA
+# aula 25
+# METODO RANGE-KUTTA 3ª ORDEM 
 
 import sys
 import os
