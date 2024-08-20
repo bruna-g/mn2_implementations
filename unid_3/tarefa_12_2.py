@@ -104,5 +104,7 @@ if __name__ == '__main__':
   print("Matriz P:")
   for i in range(tamA):
     print(matP[i])
+  print("\n")
+  
   print("Autovalores: ", lamb)
 
