@@ -12,19 +12,21 @@ tol = float(input("Insira a tolerância desejada: "))'''
 
 def potenciaInversa(matrizA, vetorInicial, E):
     L, U = decompLU(matrizA)
+    tam = len(vetorInicial)
+    vetorVelho = np.zeros(tam)
     lambdaNovo = 0.0
-    vetorNovo = vetorInicial
+    vetorNovo = vetorInicial.copy()
 
     while True:
         lambdaVelho = lambdaNovo
-        vetorVelho = vetorNovo
+        vetorVelho = vetorNovo.copy()
         x1_velho = Normalizar(vetorVelho)
         vetorNovo = solverLU(matrizA, x1_velho)
-        lambdaNovo = np.transpose(x1_velho).dot(vetorNovo)
+        lambdaNovo = (np.transpose(x1_velho)).dot(vetorNovo)
         if convergencia(lambdaVelho ,lambdaNovo) <= E:
             break
     lambdaN = 1/lambdaNovo
-    xn = x1_velho
+    xn = x1_velho.copy()
     return lambdaN, xn
 
 if __name__ == '__main__':
@@ -63,7 +65,7 @@ if __name__ == '__main__':
     print("Matriz A3: ")
     for i in range(len(matrizA3)):
         print(matrizA3[i])
-    vetorInicial3 = [1.0, 1.0, 1.0]
+    vetorInicial3 = [1.0, 1.0, 1.0, 1.0, 1.0]
     tol3 = 0.000006
 
     lambdaNew3, xNew3 = potenciaInversa(matrizA3, vetorInicial3, tol3)
