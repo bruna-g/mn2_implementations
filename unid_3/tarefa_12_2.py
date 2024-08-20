@@ -20,7 +20,7 @@ def metodoQR(matA, n, e):
   matP = matIdentidade(n)
   matAold = matA
 
-  max_iter = 5
+  max_iter = 100
   iter_count = 0
 
   while val > e:
@@ -107,4 +107,15 @@ if __name__ == '__main__':
   print("\n")
   
   print("Autovalores: ", lamb)
+  print("\n")
+
+  #pares de autovalores e autovetores da matA:
+  for i in range(tamA):
+    print("Autovalor %d: " %(i+1), lamb[i])
+    #imprimir as colunas de P
+    print("Autovetor %d: [ " %(i+1), end="" )
+    for j in range(tamA):
+      print(matP[j][i], end=" ")
+    print("]")
+    print("\n")
 
