@@ -161,9 +161,6 @@ if __name__== '__main__':
     print("]")
     print("\n")
 
-  #em construção...
-  #recebendo a matriz tridigonal que sai de HouseHolder:
-  (AbarraH, H) = metodoDeHouseHolder(matA, tamA)
   
 
 
