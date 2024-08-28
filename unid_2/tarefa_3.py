@@ -1,70 +1,59 @@
-# Implemente as fórmulas Fechadas e Abertas da Aula#7 bem como as fórmulas que
-# você desenvolveu para polinômios de substituição de grau 4 (Fechada e Aberta) e teste os
-# resultados com tolerância de 10-6
-# . O seu código (como já discutido em sala de aula)
-# implementa a estratégia de partição do problema. Veja, em cada caso, quantas iterações
-# foram necessárias até atingir a tolerância especificada.
+#polinômio de interpolação de grau 1, que interpola 2 pontos aplica a regra do trapézio aberta
+from math import sin
 
-#aula 8
-# NEWTON-COTES ABERTA E FECHADA
+def f(x):
+    return (sin(2*x) + 4*(x**2) + 3*x)**2
 
-import numpy as np
+def grau1_aberta(a, b, f):
+    h = (b - a)/3
+    delta = 3*h/2
+    return delta * (f(a + h) + f(a + 2*h))
 
-# Função para calcular as diferenças divididas
-def divided_differences(x, y):
-    n = len(y)
-    coef = np.zeros([n, n])
-    coef[:,0] = y
+#polinômio de interpolação de grau 2, que interpola 3 pontos aplica a regra de Milne aberta
+def grau2_aberta(a, b, f):
+    h = (b - a)/4
+    delta = 4*h/3
+    return delta * (2*f(a + h) - f(a + 2*h) + 2*f(a + 3*h))
 
-    for j in range(1, n):
-        for i in range(n-j):
-            coef[i][j] = (coef[i+1][j-1] - coef[i][j-1]) / (x[i+j] - x[i])
+#polinômio de interpolação de grau 3, que interpola 4 pontos
+def grau3_aberta(a, b, f):
+    h = (b - a)/5
+    delta = 5*h/24
+    return delta * (11*f(a + h) + f(a + 2*h) + f(a + 3*h) + 11*f(a + 4*h))
 
-    return coef[0, :]
+#polinômio de interpolação de grau 4, que interpola 5 pontos
+def grau4_aberta(a, b, f):
+    h = (b - a)/6
+    delta = 3*h/10
+    return delta * (11*f(a + h) - 14*f(a + 2*h) + 26*f(a + 3*h) - 14*f(a + 4*h) + 11*f(a + 5*h))
 
-# Função para construir o polinômio de Newton
-def newton_polynomial(coef, x_data, x):
-    n = len(coef)
-    polynom = coef[0]
-    for k in range(1, n):
-        term = coef[k]
-        for j in range(k):
-            term = term * (x - x_data[j])
-        polynom = polynom + term
-    return polynom
 
-# Função para integrar o polinômio de Newton
-def integrate_newton_polynomial(coef, x_data, a, b):
-    # Criar uma função anônima para o polinômio interpolador de Newton
-    def polynomial(x):
-        return newton_polynomial(coef, x_data, x)
-    
-    # Use uma integração numérica para integrar o polinômio interpolador no intervalo [a, b]
-    from scipy.integrate import quad
-    integral, _ = quad(polynomial, a, b)
-    return integral
+def newton_cotes(a, b, f, epsilon):
+    resultado_anterior = 0
+    resultado = 0
+    iteracoes = 0
+    N = 2
+    while True:
+        iteracoes += 1
+        delta = (b-a)/N
+        integral = 0
+        for i in range(N):
+            Xi = a + i*delta
+            Xf = Xi + delta
+            integral += grau2_aberta(Xi, Xf, f)
+        N = N*2
+        resultado_anterior = resultado
+        resultado = integral
+        erro = abs(resultado_anterior - resultado)
+        
+        if (erro < epsilon): 
+            break
 
-# Função principal que aplica a fórmula de Boole
-def boole_rule_newton(f, a, b):
-    h = (b - a) / 4
-    x_data = np.array([a, a + h, a + 2*h, a + 3*h, b])
-    y_data = np.array([f(x) for x in x_data])
-    
-    coef = divided_differences(x_data, y_data)
-    integral = integrate_newton_polynomial(coef, x_data, a, b)
-    
-    return integral
+    return iteracoes, resultado
 
-# Exemplo de uso da função
-if __name__ == "__main__":
-    # Definindo a função a ser integrada
-    def func(x):
-        return (np.sin(2*x) + 4*x**2 + 3*x)**2
-
-    # Definindo os limites de integração
-    a = 0
-    b = 1
-
-    # Calculando a integral utilizando a fórmula de Boole desenvolvida através do polinômio de Newton
-    result_boole = boole_rule_newton(func, a, b)
-    print(f"Integral (Boole, desenvolvida com Polinômio de Newton): {result_boole}")
+a = 0
+b = 1
+epsilon = 10**(-6)
+iteracoes, teste = newton_cotes(a, b, f, epsilon)
+print(iteracoes)
+print(teste)
